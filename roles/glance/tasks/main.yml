@@ -1,0 +1,12 @@
+---
+- name: Install Glance packages
+  apt:
+    name:
+      - glance
+      - python3-glanceclient
+    state: present
+
+- name: Enable Glance service
+  service:
+    name: glance-api
+    state: restarted

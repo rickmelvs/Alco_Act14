@@ -1,0 +1,28 @@
+---
+- name: Update repository indexes
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Update repository index (Ubuntu)
+      apt:
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+- name: Install and configure keystone
+  hosts: all
+  become: true
+  roles:
+    - keystone
+
+- name: Install and configure Glance
+  hosts: all
+  become: true
+  roles:
+    - glance
+
+- name: Install and configure Nova
+  hosts: all
+  become: true
+  roles:
+    - nova

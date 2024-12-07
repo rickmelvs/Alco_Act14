@@ -1,0 +1,30 @@
+---
+- name: Install Keystone and the necessary packages
+  apt:
+    name:
+      - keystone
+      - apache2
+      - libapache2-mod-wsgi-py3
+    state: present
+
+- name: Create Keystone service file
+  copy:
+    dest: /etc/systemd/system/keystone.service
+    content: |
+      [Unit]
+      Description=Keystone OpenStack Identity Service
+      After=network.target
+
+      [Service]
+      User=keystone
+      ExecStart=/usr/bin/keystone-manage serve --config-file /etc/keystone/keystone.conf
+      ExecStop=/bin/kill -TERM $MAINPID
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Enable Keystone service
+  service:
+    name: keystone
+    state: restarted

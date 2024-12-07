@@ -1,0 +1,18 @@
+---
+- name: Install Nova controller packages
+  apt:
+    name:
+      - nova-api
+      - nova-scheduler
+      - nova-conductor
+      - python3-novaclient
+    state: present
+
+- name: Restart Nova services
+  service:
+    name: "{{ item }}"
+    state: restarted
+  loop:
+    - nova-api
+    - nova-scheduler
+    - nova-conductor
